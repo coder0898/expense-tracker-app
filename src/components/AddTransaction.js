@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 const AddTransactionContainer = styled.div`
@@ -52,6 +52,7 @@ const AddButton = styled.button`
   border: 0;
   display: block;
   font-size: 16px;
+  font-weight:800px;
   margin: 10px 0 30px;
   padding: 10px;
   width: 100%;
@@ -63,30 +64,54 @@ const AddButton = styled.button`
   }
 `;
 
-const AddTransaction = () => {
-    return (
-        <AddTransactionContainer >
-                <FormControl>
-                    <Label htmlFor="text">Text</Label>
-                    <input type="text" id="text" placeholder="Enter Text...." />
-                </FormControl>
-                <FormControl>
-                    <Label htmlFor="amount">Amount <br /> (negative - expense ,positive - income )</Label>
-                    <input type="number" id="amount" placeholder="Enter amount..." />
-                </FormControl>
-                <RadioBox>
-                    <input
-                        type="radio"
-                    />
-                    <Label htmlFor="expense">Expense</Label>
-                    <input
-                        type="radio"
-                    />
-                    <Label htmlFor="Expense">Income</Label>
-                </RadioBox>
-                <AddButton >Add transaction</AddButton>
-        </AddTransactionContainer>
-    )
+const AddTransaction = (props) => {
+
+  const [amount, setAmount] = useState();
+  const [desc, setDesc] = useState();
+  const [type, setType] = useState("EXPENSE");
+
+  return (
+    <AddTransactionContainer >
+      <FormControl>
+        <Label htmlFor="text">Text</Label>
+        <input type="text" value={desc} onChange={(e) => setDesc(e.target.value)} placeholder="Enter Text...." />
+      </FormControl>
+      <FormControl>
+        <Label htmlFor="amount">Amount <br /> (negative - expense ,positive - income )</Label>
+        <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)}  placeholder="Enter amount..." />
+      </FormControl>
+      <RadioBox>
+        <input
+          type="radio"
+          id="expense"
+          name="type"
+          value="EXPENSE"
+          checked={type === "EXPENSE"}
+          onChange={(e) => setType(e.target.value)}
+        />
+        <Label htmlFor="expense">Expense</Label>
+        <input
+          type="radio"
+          id="income"
+          name="type"
+          value="INCOME"
+          checked={type === "INCOME"}
+          onChange={(e) => setType(e.target.value)}
+        />
+        <Label htmlFor="Expense">Income</Label>
+      </RadioBox>
+      <AddButton 
+      onClick={() =>
+          props.addTransactions({
+            id: Date.now(),
+            amount: Number(amount),
+            desc,
+            type,
+          })
+         
+        } >Add transaction Details</AddButton>
+    </AddTransactionContainer>
+  )
 }
 
 export default AddTransaction;

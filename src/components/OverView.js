@@ -29,6 +29,29 @@ margin-bottom:10px;
 }
 `;
 
+const ExpenseContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  margin: 20px;
+`;
+
+const ExpenseBox = styled.div`
+  border-radius: 4px;
+  border: 1px solid #e6e8e9;
+  padding: 15px 20px;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 135px;
+  & span {
+    color: ${(props) => (props.isIncome ? "green" : "red")};
+    font-weight: bold;
+    font-size: 20px;
+  }
+`;
+
 const AddTransactionButton = styled.div`
   font-size: 15px;
   background: #0d1d2c;
@@ -48,19 +71,28 @@ const AddTransactionButton = styled.div`
 `;
 
 
-const OverView = () => {
+const OverView = (props) => {
 
     const [transactionToggle, setTransactionToggle] = useState(false);
+    
 
   return (
     <IncomeExpenseContainer>
        <BalanceBox>
-          Balance: Rs 0.0
+          Balance: Rs {props.income - props.expense}
           <AddTransactionButton onClick={()=>setTransactionToggle(!transactionToggle)}>{!transactionToggle?"Add Transaction":"Cancel Transaction"}</AddTransactionButton>
        </BalanceBox>
        {transactionToggle && (
-        <AddTransaction/>
+        <AddTransaction addTransactions={(payload)=> props.addTransactions(payload)} />
       )}
+      <ExpenseContainer>
+        <ExpenseBox >
+          Expense<span>${props.expense}</span>
+        </ExpenseBox>
+        <ExpenseBox isIncome={true}>
+          Income<span>${props.income}</span>
+        </ExpenseBox>
+      </ExpenseContainer>
     </IncomeExpenseContainer>
   )
 }
