@@ -1,9 +1,17 @@
+import styled from "styled-components";
+import Header from "./components/Header";
+import './App.css';
+
+const Container = styled.div`
+margin: 30px auto;
+width: 350px;
+`;
 
 function App() {
   return (
-    <div className="App">
-      <h1>Expense Tracker App</h1>
-    </div>
+    <Container>
+      <Header />
+    </Container>
   );
 }
 
